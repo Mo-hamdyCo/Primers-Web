@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primers | High-End ERPNext Consulting</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Link to the custom CSS -->
+    <link href="/assets/primer_webpage/css/primers.css" rel="stylesheet">
+    <style>
+        /* Inline critical CSS for the Lead Form to ensure it loads immediately and looks great */
+        .lead-form-glass {
+            background: rgba(25, 30, 45, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .lead-form-glass::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -50%;
+            width: 200%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, rgba(0, 217, 255, 0.15), transparent 60%);
+            pointer-events: none;
+        }
+
+        .lead-form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .lead-form-header h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .lead-form-header p {
+            font-family: 'Cairo', sans-serif;
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00D9FF;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 14px 14px 45px;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #00D9FF;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group.rtl .form-control {
+            padding: 14px 45px 14px 14px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .form-group.rtl i {
+            left: auto;
+            right: 16px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #00D9FF 0%, #2563FF 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(0, 217, 255, 0.6);
+        }
+
+        .form-alert {
+            display: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-family: 'Cairo', sans-serif;
+            text-align: center;
+        }
+
+        .form-alert.success {
+            display: block;
+            background: rgba(87, 255, 106, 0.1);
+            color: #57FF6A;
+            border: 1px solid rgba(87, 255, 106, 0.2);
+        }
+
+        .form-alert.error {
+            display: block;
+            background: rgba(255, 87, 87, 0.1);
+            color: #FF5757;
+            border: 1px solid rgba(255, 87, 87, 0.2);
+        }
+
+        /* Pulse animation for the submit button */
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 0 0 0 rgba(0, 217, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 217, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 217, 255, 0); }
+        }
+        .btn-submit { animation: pulse-btn 2s infinite; }
+        .btn-submit:hover { animation: none; }
+
+        /* Loader */
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Statistics Custom Styles */
+        .stat-box.hover-glow {
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .stat-box.hover-glow:hover {
+            transform: translateY(-5px);
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #00D9FF;
+            margin-bottom: 10px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 15px rgba(0, 217, 255, 0.4);
+        }
+        .stat-box.hover-glow:hover .stat-icon {
+            color: #57FF6A;
+            transform: scale(1.1);
+            text-shadow: 0 0 20px rgba(87, 255, 106, 0.6);
+        }
+        
+        /* Mobile Responsiveness adjustments for Hero Section */
+        @media (max-width: 991px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-content {
+                margin-bottom: 40px;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .lead-form-glass {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="logo-container">
+                    <svg viewBox="0 0 100 100" class="animated-logo">
+                        <circle class="outer-ring" cx="50" cy="50" r="45" fill="none" stroke="#00D9FF" stroke-width="2" stroke-dasharray="20 10" />
+                        <circle class="inner-ring" cx="50" cy="50" r="35" fill="none" stroke="#2563FF" stroke-width="3" stroke-dasharray="30 5" />
+                        <text x="50" y="58" class="logo-letter" text-anchor="middle" fill="#FFFFFF" font-family="Space Grotesk" font-weight="700" font-size="32">P</text>
+                        <circle cx="50" cy="5" r="3" fill="#57FF6A" class="pulse-dot" />
+                        <circle cx="95" cy="50" r="3" fill="#00D9FF" class="pulse-dot" style="animation-delay: 0.5s" />
+                        <circle cx="50" cy="95" r="3" fill="#2563FF" class="pulse-dot" style="animation-delay: 1s" />
+                        <circle cx="5" cy="50" r="3" fill="#00D9FF" class="pulse-dot" style="animation-delay: 1.5s" />
+                    </svg>
+                </div>
+                <span class="brand-name">PRIMERS</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Modules</a></li>
+                <li><a href="#workflow">Process</a></li>
+                <li><a href="#industries">Industries</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://wa.me/201038971290?text=مرحبا%20عايز%20استفسر%20عن%20" target="_blank" class="btn btn-secondary">
+                    <i class="ri-whatsapp-line"></i> WhatsApp
+                </a>
+                <a href="#contact" class="btn btn-primary">Book Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-container" style="display: flex; align-items: center; justify-content: space-between; gap: 40px; padding: 120px 5% 60px;">
+            <div class="hero-content reveal slide-right" style="flex: 1;">
+                <div class="badge">
+                    <span class="dot"></span> 
+                    Premium ERPNext & Frappe Power
+                </div>
+                <h1 class="hero-title">
+                    Transform Your Business <br>
+                    <span class="arabic gradient-text" dir="rtl">حوّل شركتك إلى مستوى جديد مع <bdi>ERPNext</bdi></span>
+                </h1>
+                <p class="hero-subtitle">
+                    Empowering enterprises with intelligent automation, seamless cloud infrastructure, and business intelligence powered by the Frappe framework.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#book-demo" class="btn btn-primary btn-lg">Start Transformation</a>
+                    <a href="#book-demo" class="btn btn-outline btn-lg" style="border-color: #00D9FF; color: #00D9FF; background: rgba(0, 217, 255, 0.05); padding-left: 30px; padding-right: 30px; border-radius: 8px;">
+                        استشارة مجانية <i class="ri-arrow-left-line" style="margin-right: 5px;"></i>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item"><span class="glow-text">10x</span> Faster ROI</div>
+                    <div class="stat-item"><span class="glow-text">100%</span> Cloud Native</div>
+                </div>
+            </div>
+
+            <div class="hero-dashboard reveal slide-left">
+                <div class="dash-glass">
+                    <div class="dash-header">
+                        <div class="dash-circles">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="dash-search"></div>
+                        <div class="dash-profile">
+                            <i class="ri-notification-3-line bell-shake"></i>
+                            <div class="avatar"></div>
+                        </div>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-sidebar">
+                            <div class="dash-nav-item active"></div>
+                            <div class="dash-nav-item"></div>
+                            <div class="dash-nav-item"></div>
+                            <div class="dash-nav-item"></div>
+                        </div>
+                        <div class="dash-main">
+                            <div class="dash-cards">
+                                <div class="dash-card">
+                                    <div class="card-icon"><i class="ri-funds-line"></i></div>
+                                    <div class="card-info">
+                                        <div class="card-title">Total Revenue</div>
+                                        <div class="card-value counter" data-target="863000">0</div>
+                                    </div>
+                                    <div class="card-chart">
+                                        <svg viewBox="0 0 100 30" class="sparkline"><path d="M0 30 L 20 15 L 40 25 L 60 5 L 80 10 L 100 0" fill="none" stroke="#00D9FF" stroke-width="2"/></svg>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="card-icon" style="color: #57FF6A"><i class="ri-shopping-cart-line"></i></div>
+                                    <div class="card-info">
+                                        <div class="card-title">Orders (ERPNext)</div>
+                                        <div class="card-value counter" data-target="1240">0</div>
+                                    </div>
+                                    <div class="card-chart">
+                                        <svg viewBox="0 0 100 30" class="sparkline"><path d="M0 20 L 20 25 L 40 10 L 60 15 L 80 0 L 100 5" fill="none" stroke="#57FF6A" stroke-width="2"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dash-middle">
+                                <div class="dash-chart-panel">
+                                    <div class="panel-head">Analytics Overview</div>
+                                    <div class="bar-chart">
+                                        <div class="bar-col"><div class="bar" style="--h: 40%"></div></div>
+                                        <div class="bar-col"><div class="bar" style="--h: 70%"></div></div>
+                                        <div class="bar-col"><div class="bar" style="--h: 50%"></div></div>
+                                        <div class="bar-col"><div class="bar" style="--h: 90%"></div></div>
+                                        <div class="bar-col"><div class="bar" style="--h: 60%"></div></div>
+                                        <div class="bar-col"><div class="bar" style="--h: 80%"></div></div>
+                                        <div class="bar-col"><div class="bar" style="--h: 100%"></div></div>
+                                    </div>
+                                </div>
+                                <div class="dash-ring-panel">
+                                    <div class="panel-head">Efficiency</div>
+                                    <svg viewBox="0 0 100 100" class="progress-ring">
+                                        <circle class="ring-bg" cx="50" cy="50" r="40" />
+                                        <circle class="ring-fill" cx="50" cy="50" r="40" stroke-dasharray="251" stroke-dashoffset="60" />
+                                        <text x="50" y="55" class="ring-text">75%</text>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div class="dash-list">
+                                <div class="list-item">
+                                    <div class="list-dot" style="background:#00D9FF"></div>
+                                    <div class="list-text">Order #1254 processed <span class="arabic">تمت المعالجة</span></div>
+                                    <div class="list-status">Completed</div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-dot" style="background:#57FF6A"></div>
+                                    <div class="list-text">Invoice #INV-2026-001 <span class="arabic">تم إصدار الفاتورة</span></div>
+                                    <div class="list-status">Paid</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="statistics reveal fade-up">
+        <div class="stats-container glass-panel" style="justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+            <div class="stat-box hover-glow">
+                <i class="ri-team-line stat-icon"></i>
+                <div class="stat-number arabic" style="font-size: 1.8rem; line-height: 1.2;">مستخدمين بلا حدود</div>
+                <div class="stat-label">Unlimited Users</div>
+            </div>
+            <div class="stat-divider hide-mobile"></div>
+            <div class="stat-box hover-glow">
+                <i class="ri-pie-chart-2-line stat-icon"></i>
+                <div class="stat-number arabic" style="font-size: 1.8rem; line-height: 1.2;">تقارير لحظية</div>
+                <div class="stat-label">Real-time Reports</div>
+            </div>
+            <div class="stat-divider hide-mobile"></div>
+            <div class="stat-box hover-glow">
+                <i class="ri-shield-keyhole-line stat-icon"></i>
+                <div class="stat-number arabic" style="font-size: 1.8rem; line-height: 1.2;">تحكم بالصلاحيات</div>
+                <div class="stat-label">Role-based Access</div>
+            </div>
+            <div class="stat-divider hide-mobile"></div>
+            <div class="stat-box hover-glow">
+                <i class="ri-cloud-line stat-icon"></i>
+                <div class="stat-number arabic" style="font-size: 1.8rem; line-height: 1.2;">دعم سحابي كامل</div>
+                <div class="stat-label">Full Cloud Support</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features section-padding">
+        <div class="container">
+            <div class="section-title reveal fade-up">
+                <h2>Comprehensive <span class="gradient-text">Modules</span></h2>
+                <p class="arabic">نظام متكامل يغطي كافة احتياجات شركتك مبني على Frappe</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card glass-card reveal scale-up" style="transition-delay: 0.1s">
+                    <div class="feature-icon"><i class="ri-bank-line"></i></div>
+                    <h3>Accounting & Finance</h3>
+                    <p class="arabic">إدارة مالية دقيقة، شجرة حسابات، وقيود يومية مؤتمتة.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card glass-card reveal scale-up" style="transition-delay: 0.2s">
+                    <div class="feature-icon"><i class="ri-group-line"></i></div>
+                    <h3>HR & Payroll</h3>
+                    <p class="arabic">إدارة الموارد البشرية، الحضور والانصراف، ومسيرات الرواتب.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card glass-card reveal scale-up" style="transition-delay: 0.3s">
+                    <div class="feature-icon"><i class="ri-box-3-line"></i></div>
+                    <h3>Inventory Management</h3>
+                    <p class="arabic">تحكم كامل في المستودعات، الجرد، والتوريد اللحظي.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card glass-card reveal scale-up" style="transition-delay: 0.4s">
+                    <div class="feature-icon"><i class="ri-customer-service-2-line"></i></div>
+                    <h3>CRM & Sales</h3>
+                    <p class="arabic">تتبع العملاء المحتملين، المبيعات، وتحليل الأداء.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card glass-card reveal scale-up" style="transition-delay: 0.5s">
+                    <div class="feature-icon"><i class="ri-tools-line"></i></div>
+                    <h3>Manufacturing</h3>
+                    <p class="arabic">قوائم المواد (BOM)، أوامر التشغيل، وتخطيط السعة.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card glass-card reveal scale-up" style="transition-delay: 0.6s">
+                    <div class="feature-icon"><i class="ri-projector-line"></i></div>
+                    <h3>Projects</h3>
+                    <p class="arabic">إدارة المهام، تتبع الوقت، ومراقبة تكاليف المشروع.</p>
+                    <div class="card-glow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="workflow" class="workflow section-padding">
+        <div class="container">
+            <div class="section-title reveal fade-up">
+                <h2>Our <span class="gradient-text">Implementation</span> Process</h2>
+                <p class="arabic">منهجية عمل واضحة لضمان نجاح التحول الرقمي</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-line">
+                    <div class="timeline-progress"></div>
+                </div>
+                
+                <div class="timeline-item reveal fade-right">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <div class="step-num">01</div>
+                        <h3>Analysis <span class="arabic">التحليل</span></h3>
+                        <p>Deep dive into your business operations and mapping ERPNext modules to your needs.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item right reveal fade-left">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <div class="step-num">02</div>
+                        <h3>Planning <span class="arabic">التخطيط</span></h3>
+                        <p>Architecting the solution, defining customizations on the Frappe framework.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal fade-right">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <div class="step-num">03</div>
+                        <h3>Implementation <span class="arabic">التنفيذ</span></h3>
+                        <p>System setup, data migration, and rigorous testing environments.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right reveal fade-left">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <div class="step-num">04</div>
+                        <h3>Training & Go Live <span class="arabic">التدريب والإطلاق</span></h3>
+                        <p>Empowering your team and executing a seamless transition to the live system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="industries" class="industries section-padding">
+        <div class="container">
+            <div class="section-title reveal fade-up">
+                <h2>Empowering <span class="gradient-text">Industries</span></h2>
+                <p class="arabic">حلول مخصصة لمختلف القطاعات</p>
+            </div>
+            
+            <div class="industries-flex">
+                <div class="ind-item reveal pop-in"><i class="ri-hospital-line"></i><span>Healthcare</span></div>
+                <div class="ind-item reveal pop-in" style="transition-delay: 0.1s"><i class="ri-building-4-line"></i><span>Construction</span></div>
+                <div class="ind-item reveal pop-in" style="transition-delay: 0.2s"><i class="ri-factory-line"></i><span>Manufacturing</span></div>
+                <div class="ind-item reveal pop-in" style="transition-delay: 0.3s"><i class="ri-store-2-line"></i><span>Retail</span></div>
+                <div class="ind-item reveal pop-in" style="transition-delay: 0.4s"><i class="ri-truck-line"></i><span>Distribution</span></div>
+                <div class="ind-item reveal pop-in" style="transition-delay: 0.5s"><i class="ri-restaurant-line"></i><span>Hospitality</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION for Registration -->
+    <section id="book-demo" class="registration-section section-padding">
+        <div class="container">
+            <div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap; background: rgba(11, 36, 56, 0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                
+                <div class="registration-content reveal slide-right" style="flex: 1; min-width: 300px;">
+                    <h2 style="font-size: 2.2rem; color: #fff; margin-bottom: 20px; font-weight: 700;">Ready to Upgrade Your Operations?</h2>
+                    <h2 class="arabic gradient-text" style="font-size: 2.4rem; margin-bottom: 30px; font-weight: 700;" dir="rtl">ابدأ رحلة التحول الرقمي مع <bdi>ERPNext</bdi></h2>
+                    <p style="color: #9DB7CC; font-size: 1.1rem; margin-bottom: 20px; line-height: 1.8;" dir="rtl" class="arabic">
+                        سجل بياناتك الآن للحصول على استشارة مجانية مع خبرائنا. سنقوم بتحليل احتياجات شركتك وتقديم عرض توضيحي (Demo) مخصص يوضح كيف يمكن لنظام ERPNext أن يقلل التكاليف ويزيد من كفاءة العمليات بشكل مباشر وفعال.
+                    </p>
+                    <ul style="color: #fff; list-style: none; padding: 0; margin-bottom: 30px; font-size: 1.1rem;" class="arabic" dir="rtl">
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;"><i class="ri-checkbox-circle-fill" style="color: #57FF6A; font-size: 1.2rem;"></i> دراسة مجانية لاحتياجات الشركة</li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;"><i class="ri-checkbox-circle-fill" style="color: #57FF6A; font-size: 1.2rem;"></i> خطة تطبيق واضحة ومدروسة</li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;"><i class="ri-checkbox-circle-fill" style="color: #57FF6A; font-size: 1.2rem;"></i> عرض توضيحي للنظام مصمم خصيصاً لك</li>
+                    </ul>
+                </div>
+                
+                <div class="registration-form reveal slide-left" style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+                    <div class="lead-form-glass">
+                        <div class="lead-form-header">
+                            <h3>Book a Free Demo</h3>
+                            <p class="arabic" dir="rtl">سجل بياناتك الآن للحصول على استشارة مجانية</p>
+                        </div>
+                        
+                        <div id="leadFormAlert" class="form-alert"></div>
+
+                        <form id="leadForm">
+                            <div class="form-group rtl">
+                                <i class="ri-user-line"></i>
+                                <input type="text" id="leadName" class="form-control" placeholder="الاسم الكامل (Full Name)" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <i class="ri-mail-line"></i>
+                                <input type="email" id="leadEmail" class="form-control" placeholder="Email Address" required>
+                            </div>
+
+                            <div class="form-group">
+                                <i class="ri-phone-line"></i>
+                                <input type="tel" id="leadPhone" class="form-control" placeholder="رقم الهاتف (Phone Number)" required>
+                            </div>
+                            
+                            <div class="form-group rtl">
+                                <i class="ri-building-line"></i>
+                                <input type="text" id="leadCompany" class="form-control" placeholder="اسم الشركة (Company Name)" required>
+                            </div>
+
+                            <div class="form-group rtl">
+                                <i class="ri-briefcase-4-line"></i>
+                                <input type="text" id="leadIndustry" class="form-control" placeholder="تخصص الشركة (Industry / Domain)">
+                            </div>
+
+                            <button type="submit" id="btnSubmitLead" class="btn-submit">
+                                <span class="btn-text">Submit Request <span class="arabic">إرسال الطلب</span></span>
+                                <i class="ri-arrow-right-line"></i>
+                                <div class="loader" id="submitLoader"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="logo-container" style="width: 50px; height: 50px; margin-bottom: 20px;">
+                    <svg viewBox="0 0 100 100" class="animated-logo">
+                        <circle class="outer-ring" cx="50" cy="50" r="45" fill="none" stroke="#00D9FF" stroke-width="2" stroke-dasharray="20 10" />
+                        <circle class="inner-ring" cx="50" cy="50" r="35" fill="none" stroke="#2563FF" stroke-width="3" stroke-dasharray="30 5" />
+                        <text x="50" y="58" class="logo-letter" text-anchor="middle" fill="#FFFFFF" font-family="Space Grotesk" font-weight="700" font-size="32">P</text>
+                    </svg>
+                </div>
+                <h2>PRIMERS</h2>
+                <p>Premium ERPNext Consulting & Digital Transformation.</p>
+                <div class="social-links">
+                    <a href="#"><i class="ri-linkedin-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-x-line"></i></a>
+                    <a href="#"><i class="ri-github-fill"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Solutions</h3>
+                <ul>
+                    <li><a href="#">ERPNext Implementation</a></li>
+                    <li><a href="#">Frappe Customization</a></li>
+                    <li><a href="#">Cloud Hosting</a></li>
+                    <li><a href="#">Support & Maintenance</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="ri-mail-line"></i> hello@primers-erp.com</li>
+                    <li><i class="ri-phone-line"></i> +201038971290</li>
+                    <li>
+                        <a href="https://wa.me/201038971290?text=مرحبا%20عايز%20استفسر%20عن%20" target="_blank" class="btn btn-outline" style="margin-top: 15px; width: 100%; text-align: center;">
+                            <i class="ri-whatsapp-line"></i> Message on WhatsApp
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Primers. All rights reserved. Built for Enterprise.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/201038971290?text=مرحبا%20عايز%20استفسر%20عن%20" target="_blank" class="floating-wa pulse-wa">
+        <i class="ri-whatsapp-line"></i>
+    </a>
+
+    <!-- Link to external JS -->
+    <script src="/assets/primer_webpage/js/primers.js"></script>
+
+</body>
+</html>
