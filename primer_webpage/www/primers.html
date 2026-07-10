@@ -264,6 +264,28 @@
             .nav-links {
                 display: none !important; /* Hide links on small mobile, rely on actions/hamburger if added later */
             }
+            
+            /* Fix Header / Nav on Mobile */
+            .nav-actions .btn-secondary {
+                display: none !important; /* Hide WhatsApp from nav on mobile since there is a floating WA button */
+            }
+            .nav-actions .btn {
+                padding: 8px 16px !important;
+                font-size: 0.85rem !important;
+            }
+            .brand-name {
+                font-size: 1.2rem !important;
+                letter-spacing: 1px !important;
+            }
+            .logo-container {
+                width: 35px !important;
+                height: 35px !important;
+            }
+
+            /* Fix 'Implementation' word shift */
+            .section-title h2 .gradient-text {
+                display: inline !important;
+            }
         }
     </style>
 </head>
