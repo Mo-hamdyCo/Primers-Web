@@ -196,20 +196,73 @@
             text-shadow: 0 0 20px rgba(87, 255, 106, 0.6);
         }
         
-        /* Mobile Responsiveness adjustments for Hero Section */
+        /* Mobile Responsiveness adjustments */
+        @media (max-width: 1199px) {
+            .hero-dashboard {
+                transform: scale(0.9);
+                transform-origin: center right;
+            }
+        }
+
         @media (max-width: 991px) {
             .hero-container {
+                display: flex !important;
                 flex-direction: column;
                 text-align: center;
+                gap: 40px !important;
+                padding-top: 100px !important;
+            }
+            .hero-dashboard {
+                transform: scale(1);
+                width: 100%;
             }
             .hero-content {
-                margin-bottom: 40px;
+                margin-bottom: 20px;
             }
             .hero-buttons {
                 justify-content: center;
+                flex-wrap: wrap;
+            }
+            .hero-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
             }
             .lead-form-glass {
                 padding: 30px 20px;
+            }
+            .hide-mobile {
+                display: none !important;
+            }
+            .registration-section .container > div {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 20px !important;
+            }
+            .registration-content ul li {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hero-title {
+                font-size: 2.2rem !important;
+            }
+            .hero-title .arabic {
+                font-size: 1.8rem !important;
+            }
+            .dash-cards {
+                grid-template-columns: 1fr !important;
+            }
+            .dash-middle {
+                grid-template-columns: 1fr !important;
+            }
+            .stat-box {
+                flex: 1 1 100%;
+                margin-bottom: 15px;
+            }
+            .nav-links {
+                display: none !important; /* Hide links on small mobile, rely on actions/hamburger if added later */
             }
         }
     </style>
@@ -605,7 +658,7 @@
             <div class="footer-contact">
                 <h3>Contact Us</h3>
                 <ul>
-                    <li><i class="ri-mail-line"></i> hello@primers-erp.com</li>
+                    <li><i class="ri-mail-line"></i> primers.solutions.com</li>
                     <li><i class="ri-phone-line"></i> +201038971290</li>
                     <li>
                         <a href="https://wa.me/201038971290?text=مرحبا%20عايز%20استفسر%20عن%20" target="_blank" class="btn btn-outline" style="margin-top: 15px; width: 100%; text-align: center;">
